@@ -8,13 +8,13 @@ import java.util.List;
  */
 public abstract class Character {
     protected String name;
-    protected int strength;
-    protected int agility;
-    protected int intelligence;
-    protected int speed;
     protected int level;
     protected int experience;
     protected List<Ability> abilities;
+    private int strength;
+    private int agility;
+    private int intelligence;
+    private int speed;
 
     public Character(String name, int strength, int agility, int intelligence, int speed) {
         this.name = name;
@@ -41,6 +41,38 @@ public abstract class Character {
         }
     }
 
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    public int getAgility() {
+        return agility;
+    }
+
+    public void setAgility(int agility) {
+        this.agility = agility;
+    }
+
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
     protected void levelUp() {
         this.level++;
         this.experience = 0;
@@ -50,6 +82,13 @@ public abstract class Character {
     public boolean isAlive() {
         // Exemple simple : tant que level > 0
         return this.level > 0;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     // Getters et setters...
