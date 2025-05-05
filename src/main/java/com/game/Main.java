@@ -6,10 +6,17 @@ import com.game.combat.CombatManager;
 
 public class Main {
     public static void main(String[] args) {
-        Player player = new Player("Aelrion", Race.ELF, Profession.MAGE);
-        NPC enemy = new NPC("Gorgul", Race.ORC, Profession.WARRIOR, DifficultyLevel.MEDIUM);
+
+
+        Player aelrion = new Player("Aelrion", Race.ELF, Profession.MAGE);
+        aelrion.setHealth(100);
+
+        NPC gorgul = new NPC("Gorgul", Race.ORC, Profession.WARRIOR, DifficultyLevel.MEDIUM);
+        gorgul.setHealth(120);
+
+        System.out.println("Aelrion HP après attaque : " + aelrion.getHealth());
 
         CombatManager combat = new CombatManager();
-        combat.startCombat(player, enemy);
+        combat.startCombat(aelrion, gorgul);
     }
 }

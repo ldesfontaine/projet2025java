@@ -7,6 +7,7 @@ import java.util.List;
  * Classe abstraite représentant un personnage de jeu.
  */
 public abstract class Character {
+    private int health;
     protected String name;
     protected int level;
     protected int experience;
@@ -16,12 +17,13 @@ public abstract class Character {
     private int intelligence;
     private int speed;
 
-    public Character(String name, int strength, int agility, int intelligence, int speed) {
+    public Character(String name, int strength, int agility, int intelligence, int speed, int health) {
         this.name = name;
         this.strength = strength;
         this.agility = agility;
         this.intelligence = intelligence;
         this.speed = speed;
+        this.health = health;
         this.level = 1;
         this.experience = 0;
         this.abilities = new ArrayList<>();
@@ -73,16 +75,34 @@ public abstract class Character {
         this.speed = speed;
     }
 
-    protected void levelUp() {
-        this.level++;
-        this.experience = 0;
-        // Bonus de stats ou récompenses à implémenter
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 
     public boolean isAlive() {
-        // Exemple simple : tant que level > 0
-        return this.level > 0;
+        return this.health > 0;
     }
+
+    public void takeDamage(int damage) {
+        this.health -= damage;
+        if (this.health < 0) {
+            this.health = 0; // Empêche les HP négatifs
+        }
+    }
+
+    public void displayStats() {
+        System.out.println(this.name + " - HP: " + this.health + " / Force: " + this.strength + " / Agilité: " + this.agility + " / Intelligence: " + this.intelligence + " / Vitesse: " + this.speed);
+    }
+
+    protected void levelUp() {
+        this.level++;
+        this.experience = 0;
+    }
+
 
     public String getName() {
         return name;
@@ -91,5 +111,4 @@ public abstract class Character {
         this.name = name;
     }
 
-    // Getters et setters...
 }

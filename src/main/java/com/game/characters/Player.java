@@ -13,15 +13,17 @@ public class Player extends Character {
                 race.getBaseStrength() + profession.getStrengthBonus(),
                 race.getBaseAgility() + profession.getAgilityBonus(),
                 race.getBaseIntelligence() + profession.getIntelligenceBonus(),
-                race.getBaseSpeed() + profession.getSpeedBonus());
-        // Ajouter les abilities de race et de classe
+                race.getBaseSpeed() + profession.getSpeedBonus(),
+                100);
         this.abilities.addAll(race.getRaceAbilities());
         this.abilities.addAll(profession.getClassAbilities());
     }
 
     @Override
     public void attack(Character target) {
-        // Implémenter la logique d'attaque de base
+        int damage = this.getStrength();
+        System.out.println(this.getName() + " attaque " + target.getName() + " et inflige " + damage + " dégâts !");
+        target.takeDamage(damage);
     }
 
     @Override

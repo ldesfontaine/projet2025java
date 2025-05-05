@@ -6,22 +6,42 @@ public class CombatManager {
     public void startCombat(Character player, Character enemy) {
         System.out.println("Le combat commence entre " + player.getName() + " et " + enemy.getName());
 
-        // Affichage des stats de départ
-        System.out.println(player.getName() + " - Force: " + player.getStrength() + " / Vitesse: " + player.getSpeed());
-        System.out.println(enemy.getName() + " - Force: " + enemy.getStrength() + " / Vitesse: " + enemy.getSpeed());
-
-        // Tour par tour simplifié
         Character first = (player.getSpeed() >= enemy.getSpeed()) ? player : enemy;
         Character second = (first == player) ? enemy : player;
 
         System.out.println(first.getName() + " commence !");
 
-        for (int i = 0; i < 3; i++) {
-            System.out.println("--- Tour " + (i + 1) + " ---");
-            first.attack(second);
-            second.attack(first);
+        boolean isFirstTurn = true;
+        while (player.isAlive() && enemy.isAlive()) {
+            System.out.println("--- Nouveau tour ---");
+
+            if (isFirstTurn) {
+                first.attack(second);
+                isFirstTurn = false;
+            } else {
+                first.attack(second);
+                if (!second.isAlive()) {
+                    System.out.println(second.getName() + " est mort !");
+                    break;
+                }
+                second.attack(first);
+            }
+
+            if (!first.isAlive()) {
+                System.out.println(first.getName() + " est mort !");
+                break;
+            }
+
+            System.out.println("Statistiques après ce tour :");
+            player.displayStats();
+            enemy.displayStats();
+
+            // Alterne les rôles après chaque tour
+            Character temp = first;
+            first = second;
+            second = temp;
         }
 
-        System.out.println("Fin du combat (simulation).");
+        System.out.println("Fin du combat.");
     }
 }

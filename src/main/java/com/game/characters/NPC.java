@@ -16,9 +16,10 @@ public class NPC extends Character {
                 race.getBaseStrength() + profession.getStrengthBonus(),
                 race.getBaseAgility() + profession.getAgilityBonus(),
                 race.getBaseIntelligence() + profession.getIntelligenceBonus(),
-                race.getBaseSpeed() + profession.getSpeedBonus()
+                race.getBaseSpeed() + profession.getSpeedBonus(),
+                100 // Exemple : 100 HP par défaut pour les NPCs
         );
-        this.difficulty = difficulty; // <-- AJOUT OBLIGATOIRE
+        this.difficulty = difficulty;
 
         this.abilities.addAll(race.getRaceAbilities());
         this.abilities.addAll(profession.getClassAbilities());
@@ -34,7 +35,7 @@ public class NPC extends Character {
                 setAgility(getAgility() - 2);
             }
             case MEDIUM -> {
-                // Pas de modification
+                // flemme
             }
             case HARD -> {
                 setStrength(getStrength() + 3);
