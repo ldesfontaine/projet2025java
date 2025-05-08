@@ -1,47 +1,66 @@
 package com.game.combat;
 
-import com.game.characters.Character;
+import com.game.characters.Player;
+import com.game.abilities.Ability;
+
+import java.util.Random;
 
 public class CombatManager {
-    public void startCombat(Character player, Character enemy) {
-        System.out.println("Le combat commence entre " + player.getName() + " et " + enemy.getName());
+    private final Random rng = new Random();
 
-        Character first = (player.getSpeed() >= enemy.getSpeed()) ? player : enemy;
-        Character second = (first == player) ? enemy : player;
+    public void startCombat(Player p1, Player p2) {
+        System.out.println("Combat : " + p1.getName() + " vs " + p2.getName());
 
-        System.out.println(first.getName() + " commence !");
+        while (p1.isAlive() && p2.isAlive()) {
+            System.out.println("\n--- Nouveau tour ---");
 
-        boolean isFirstTurn = true;
-        while (player.isAlive() && enemy.isAlive()) {
-            System.out.println("--- Nouveau tour ---");
+            // Affichage des HP avant les attaques
+            printHpStatus(p1, p2);
 
-            if (isFirstTurn) {
-                first.attack(second);
-                isFirstTurn = false;
-            } else {
-                first.attack(second);
-                if (!second.isAlive()) {
-                    System.out.println(second.getName() + " est mort !");
-                    break;
-                }
-                second.attack(first);
+            Player first  = p1.getSpeed() >= p2.getSpeed() ? p1 : p2;
+            Player second = (first == p1) ? p2 : p1;
+
+            // Attaque du premier
+            performAttack(first, second);
+            if (!second.isAlive()) {
+                System.out.println(second.getName() + " est mort !");
+                break;
             }
 
+            // Affichage des HP après la première attaque
+            printHpStatus(p1, p2);
+
+            // Riposte du second
+            performAttack(second, first);
             if (!first.isAlive()) {
                 System.out.println(first.getName() + " est mort !");
                 break;
             }
 
-            System.out.println("Statistiques après ce tour :");
-            player.displayStats();
-            enemy.displayStats();
+            // Affichage des HP après la riposte
+            printHpStatus(p1, p2);
 
-            // Alterne les rôles après chaque tour
-            Character temp = first;
-            first = second;
-            second = temp;
+            // Affichage détaillé des stats
+            p1.displayStats();
+            p2.displayStats();
         }
 
-        System.out.println("Fin du combat.");
+        System.out.println("\n>> Résultat : " +
+                (p1.isAlive() ? p1.getName() + " l’emporte !" : p2.getName() + " l’emporte !"));
     }
+
+
+    private void performAttack(Player attacker, Player defender) {
+        Ability choice = attacker.abilities.get(rng.nextInt(attacker.abilities.size()));
+        System.out.println(attacker.getName() + " utilise " +
+                choice.getClass().getSimpleName());
+        attacker.useAbility(choice, defender);
+    }
+
+    private void printHpStatus(Player p1, Player p2) {
+        System.out.printf("%s — HP: %d | %s — HP: %d%n",
+                p1.getName(), p1.getHealth(),
+                p2.getName(), p2.getHealth());
+    }
+
 }

@@ -3,5 +3,11 @@ package com.game.abilities;
 /**
  * Marqueur pour capacités liées aux classes.
  */
-public interface ClassAbility extends Ability {}
+
+import com.game.characters.Player;
+
+public interface ClassAbility extends Ability {
+    @Override
+    void execute(Player source, Player target);
+}
 

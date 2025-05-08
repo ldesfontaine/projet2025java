@@ -1,15 +1,35 @@
 package com.game.stats;
 
 import com.game.abilities.ClassAbility;
+import com.game.abilities.impl.Slash;
+import com.game.abilities.impl.Fireball;
+import com.game.abilities.impl.Backstab;
+
+import java.util.Collection;
 import java.util.List;
 
 /**
- * Enum des professions (classes) du jeu, fournissant bonus et capacités.
+ * Enum des professions avec leurs bonus de stats et leurs capacités de classe.
  */
 public enum Profession {
-    WARRIOR(3, 2, 1, 2),
-    MAGE(1, 2, 4, 3),
-    ROGUE(2, 4, 1, 5);
+    WARRIOR(3, 2, 1, 2) {
+        @Override
+        public Collection<? extends ClassAbility> getClassAbilities() {
+            return List.of(new Slash());
+        }
+    },
+    MAGE(1, 2, 4, 3) {
+        @Override
+        public Collection<? extends ClassAbility> getClassAbilities() {
+            return List.of(new Fireball());
+        }
+    },
+    ROGUE(2, 4, 1, 5) {
+        @Override
+        public Collection<? extends ClassAbility> getClassAbilities() {
+            return List.of(new Backstab());
+        }
+    };
 
     private final int strengthBonus;
     private final int agilityBonus;
@@ -23,13 +43,14 @@ public enum Profession {
         this.speedBonus = spd;
     }
 
-    public int getStrengthBonus() { return strengthBonus; }
-    public int getAgilityBonus() { return agilityBonus; }
+    public int getStrengthBonus()     { return strengthBonus; }
+    public int getAgilityBonus()      { return agilityBonus; }
     public int getIntelligenceBonus() { return intelligenceBonus; }
-    public int getSpeedBonus() { return speedBonus; }
+    public int getSpeedBonus()        { return speedBonus; }
 
-    public List<ClassAbility> getClassAbilities() {
-        // Retourner la liste des capacités propres à chaque classe
-        return List.of();
-    }
+    /**
+     * Retourne les capacités propres à chaque profession.
+     * Notez le type ClassAbility, pas RaceAbility.
+     */
+    public abstract Collection<? extends ClassAbility> getClassAbilities();
 }
