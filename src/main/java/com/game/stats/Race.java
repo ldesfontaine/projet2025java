@@ -12,7 +12,7 @@ public enum Race {
     HUMAN(5,5,5,5) {
         @Override
         public List<RaceAbility> getRaceAbilities() {
-            return List.of();  // pas de bonus
+            return List.of();
         }
     },
     ELF(4,7,6,7) {
@@ -22,12 +22,6 @@ public enum Race {
         }
     },
     ORC(7,5,4,4) {
-        @Override
-        public List<RaceAbility> getRaceAbilities() {
-            return List.of();
-        }
-    },
-    DWARF(6,6,4,3) {
         @Override
         public List<RaceAbility> getRaceAbilities() {
             return List.of();

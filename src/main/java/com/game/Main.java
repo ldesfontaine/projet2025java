@@ -6,6 +6,8 @@ import com.game.abilities.Ability;
 import com.game.stats.Race;
 import com.game.stats.Profession;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -14,17 +16,18 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Random random = new Random();
 
-        // Création du joueur
-        Player player = new Player("Aelrion", Race.ELF, Profession.MAGE, 100);
+        Player enemy = new Player("Aelrion", Race.ELF, Profession.MAGE, 30);
+//        Player player = new Player("Aelrion", Race.ELF, Profession.MAGE, 30);
+        Player player = new Player("Gorgul", Race.ORC, Profession.WARRIOR, 30);
 
-        // Création d'un adversaire IA
-        Player enemy = new Player("Gorgul", Race.ORC, Profession.WARRIOR, 120);
+        Queue<Player> players = new LinkedList<>();
+        players.add(player);
+        players.add(enemy);
 
-        CombatManager combat = new CombatManager();
+        CombatManager combat = new CombatManager(players);
 
         System.out.println("Début du duel !");
 
-        // Tour par tour manuel (choix du joueur)
         while (player.isAlive() && enemy.isAlive()) {
             System.out.println("\nVos capacités :");
             for (int i = 0; i < player.abilities.size(); i++) {
@@ -44,7 +47,6 @@ public class Main {
             enemy.useAbility(ai, player);
         }
 
-        // Résultat final
         if (player.isAlive()) {
             System.out.println("\nFélicitations, vous avez vaincu !");
         } else {

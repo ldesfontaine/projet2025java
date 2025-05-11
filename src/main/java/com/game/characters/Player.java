@@ -1,94 +1,41 @@
 package com.game.characters;
 
-import com.game.abilities.Ability;
-import com.game.stats.Profession;
-import com.game.stats.Race;
+import com.game.items.Equipment;
+import com.game.items.Consumable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Représente un acteur du combat : joueur ou adversaire IA.
- */
 public class Player {
-    public final List<Ability> abilities;
     private final String name;
-    private final Race race;
-    private final Profession profession;
-    private int health;
-    private int strength;
-    private final int agility;
-    private final int intelligence;
-    private int speed;
+    private int damage = 10; // Exemple de statistique
+    private final List<Equipment> equipmentList = new ArrayList<>();
+    private final List<Consumable> consumables = new ArrayList<>();
 
-    public Player(String name, Race race, Profession profession, int baseHealth) {
+    public Player(String name) {
         this.name = name;
-        this.race = race;
-        this.profession = profession;
-        this.health = baseHealth;
-
-        // calcul des stats
-        this.strength = race.getBaseStrength() + profession.getStrengthBonus();
-        this.agility = race.getBaseAgility() + profession.getAgilityBonus();
-        this.intelligence = race.getBaseIntelligence() + profession.getIntelligenceBonus();
-        this.speed = race.getBaseSpeed() + profession.getSpeedBonus();
-
-        // collecte des capacités
-        this.abilities = new ArrayList<>();
-        this.abilities.addAll(race.getRaceAbilities());
-        this.abilities.addAll(profession.getClassAbilities());
     }
 
-    // Accesseurs
     public String getName() {
         return name;
     }
 
-    public int getHealth() {
-        return health;
+    public int getDamage() {
+        return damage;
     }
 
-    public void setHealth(int hp) {
-        this.health = Math.max(0, hp);
+    public void setDamage(int damage) {
+        this.damage = damage;
     }
 
-    public int getStrength() {
-        return strength;
+    public void equip(Equipment equipment) {
+        equipmentList.add(equipment);
+        System.out.println(name + " a équipé : " + equipment.getName());
+        equipment.applyEffect();
     }
 
-    public void setStrength(int str) {
-        this.strength = str;
-    }
-
-    public int getAgility() {
-        return agility;
-    }
-
-    public int getIntelligence() {
-        return intelligence;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public boolean isAlive() {
-        return this.health > 0;
-    }
-
-    public void takeDamage(int dmg) {
-        setHealth(this.health - dmg);
-    }
-
-    public void useAbility(Ability ability, Player target) {
-        ability.execute(this, target);
-    }
-
-    public void displayStats() {
-        System.out.printf("%s — HP: %d | STR: %d | AGI: %d | INT: %d | SPD: %d%n", name, health, strength, agility, intelligence, speed);
+    public void addConsumable(Consumable consumable) {
+        consumables.add(consumable);
+        System.out.println(name + " a ajouté une potion : " + consumable.getClass().getSimpleName());
     }
 }
