@@ -1,8 +1,9 @@
-package com.game.equipment;
+package com.game.items.impl;
 
+import com.game.items.Equipment;
 import com.game.characters.Player;
 
-public class Sword extends Equipment {
+public abstract class Sword extends Equipment {
     public Sword() {
         super("Épée");
     }

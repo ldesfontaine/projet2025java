@@ -5,9 +5,15 @@ import com.game.characters.Player;
 
 public class Backstab implements ClassAbility {
     @Override
-    public void execute(Player source, Player target) {
-        int damage = source.getAgility() * 2;
-        System.out.println(source.getName() + " exécute Backstab et inflige " + damage + " dégâts !");
+    public void applyEffect(Player target) {
+        int damage = 10; // Exemple de valeur fixe ou calculée
+        System.out.println("Backstab inflige " + damage + " dégâts à " + target.getName() + " !");
         target.takeDamage(damage);
+    }
+
+    @Override
+    public void execute(Player source, Player target) {
+        System.out.println(source.getName() + " utilise Backstab sur " + target.getName() + " !");
+        applyEffect(target);
     }
 }

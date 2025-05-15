@@ -1,6 +1,8 @@
-package com.game.items.equipment;
+package com.game.items.impl;
 
-public class Staff extends Equipment {
+import com.game.items.Equipment;
+
+public abstract class Staff extends Equipment {
     public Staff() {
         super("Bâton");
     }
@@ -10,6 +12,3 @@ public class Staff extends Equipment {
         System.out.println("Augmente la puissance magique !");
     }
 }
-
-
-// TODO MAUVAIS HERITAGE DE EQUIPEEMTNS SUR LES EQUIPEEMNT

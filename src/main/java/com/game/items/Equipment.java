@@ -2,17 +2,18 @@ package com.game.items;
 
 import com.game.characters.Player;
 
-public class Equipment implements Item {
-    private final int strengthBonus;
+public abstract class Equipment {
+    private final String name;
 
-    public Equipment(int strengthBonus) {
-        this.strengthBonus = strengthBonus;
+    public Equipment(String name) {
+        this.name = name;
     }
 
-    @Override
-    public void use(Player target) {
-        target.setStrength(target.getStrength() + strengthBonus);
-        System.out.println(target.getName()
-                + " équipe un artefact et gagne +" + strengthBonus + " force !");
+    public String getName() {
+        return name;
     }
+
+    public abstract void applyEffect();
+
+    public abstract void applyEffect(Player player);
 }

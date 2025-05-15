@@ -10,4 +10,11 @@ public class Slash implements ClassAbility {
         System.out.println(source.getName() + " utilise Slash et inflige " + damage + " dégâts !");
         target.takeDamage(damage);
     }
+
+    @Override
+    public void applyEffect(Player target) {
+        int damage = 5; // Exemple de valeur fixe ou calculée
+        System.out.println("Slash inflige " + damage + " dégâts à " + target.getName() + " !");
+        target.takeDamage(damage);
+    }
 }

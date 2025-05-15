@@ -7,7 +7,6 @@ import com.game.characters.Player;
  */
 
 public interface Ability {
+    void applyEffect(Player target);
     void execute(Player source, Player target);
 }
-
-

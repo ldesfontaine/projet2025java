@@ -9,4 +9,10 @@ public class ElfSpeedBoost implements RaceAbility {
         source.setSpeed(source.getSpeed() + 2);
         System.out.println(source.getName() + " gagne +2 de vitesse grâce à l’ElfSpeedBoost !");
     }
+
+    @Override
+    public void applyEffect(Player target) {
+        target.setSpeed(target.getSpeed() + 2);
+        System.out.println(target.getName() + " bénéficie d’un boost de vitesse de +2 !");
+    }
 }
