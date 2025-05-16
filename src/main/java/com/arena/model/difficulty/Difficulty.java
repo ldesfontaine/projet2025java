@@ -1,7 +1,7 @@
 package com.arena.model.difficulty;
 
-import com.arena.game.ability.impl.*;
-import com.arena.game.ability.Ability;
+import com.arena.ability.impl.*;
+import com.arena.ability.Ability;
 import java.util.List;
 
 public enum Difficulty {

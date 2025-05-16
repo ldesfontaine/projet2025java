@@ -1,6 +1,6 @@
 package com.arena.combat;
 
-import com.arena.characters.Player;
+import com.arena.model.Player;
 import java.util.Queue;
 
 public class TurnManager {

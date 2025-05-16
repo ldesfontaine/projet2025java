@@ -1,6 +1,6 @@
 package com.arena.ability;
 
-import com.arena.game.model.Character;
+import com.arena.model.Character;
 
 public interface Ability {
     String getName();

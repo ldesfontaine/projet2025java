@@ -1,7 +1,7 @@
 package com.arena.ability.impl;
 
-import com.arena.game.ability.Ability;
-import com.arena.game.model.Character;
+import com.arena.ability.Ability;
+import com.arena.model.Character;
 
 public class Slash implements Ability {
     @Override public String getName() { return "Slash"; }

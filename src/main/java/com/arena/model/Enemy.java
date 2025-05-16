@@ -1,6 +1,6 @@
 package com.arena.model;
 
-import com.arena.game.model.difficulty.Difficulty;
+import com.arena.model.difficulty.Difficulty;
 import java.util.Random;
 
 public class Enemy extends Character {
