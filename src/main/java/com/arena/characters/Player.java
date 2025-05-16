@@ -1,10 +1,10 @@
-package com.game.characters;
+package com.arena.characters;
 
-import com.game.abilities.Ability;
-import com.game.items.Equipment;
-import com.game.items.Consumable;
-import com.game.stats.Race;
-import com.game.stats.Profession;
+import com.arena.ability.Ability;
+import com.arena.items.Equipment;
+import com.arena.items.Consumable;
+import com.arena.stats.Race;
+import com.arena.stats.Profession;
 
 import java.util.ArrayList;
 import java.util.List;
