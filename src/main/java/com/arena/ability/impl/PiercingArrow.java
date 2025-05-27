@@ -1,24 +1,11 @@
 package com.arena.ability.impl;
 
-import com.arena.ability.Ability;
+import com.arena.ability.SimpleDamageAbility;
 import com.arena.model.Character;
 
-public class PiercingArrow implements Ability {
-
-    @Override
-    public void execute(Character user, Character target) {
-        int damage = user.getAgility() * 2; // Exemple : dégâts basés sur l'agilité
-        target.takeDamage(damage);
-        System.out.println(user.getName() + " utilise Piercing Arrow sur " + target.getName() + " et inflige " + damage + " dégâts !");
-    }
-
-    @Override
-    public String getName() {
-        return "Piercing Arrow";
-    }
-
-    @Override
-    public void applyEffect(Character source, Character target) {
-
+public class PiercingArrow extends SimpleDamageAbility {
+    @Override public String getName() { return "Piercing Arrow"; }
+    @Override protected int computeBaseDamage(Character source) {
+        return source.getAgility() * 2;
     }
 }

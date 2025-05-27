@@ -1,11 +1,11 @@
 package com.arena.ui;
 
 import com.arena.ability.Ability;
-import com.arena.model.Player;
 import com.arena.model.Enemy;
-import com.arena.stats.Race;
-import com.arena.stats.Profession;
+import com.arena.model.Player;
 import com.arena.model.difficulty.Difficulty;
+import com.arena.stats.Profession;
+import com.arena.stats.Race;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,43 +14,32 @@ import java.util.List;
 
 public class SwingCombatUI extends JFrame {
     private final Player player;
-    private Enemy currentEnemy;
     private final List<Enemy> foes;
-    private int foeIndex = 0;
-    private boolean gameOver = false;
-
     // Composants
     private final JLabel lblPlayerInfo = new JLabel();
-    private final JLabel lblEnemyInfo  = new JLabel();
-    private final JPanel pnlAbilities  = new JPanel(new GridLayout(0,1,5,5));
-    private final JTextArea taLog      = new JTextArea();
+    private final JLabel lblEnemyInfo = new JLabel();
+    private final JPanel pnlAbilities = new JPanel(new GridLayout(0, 1, 5, 5));
+    private final JTextArea taLog = new JTextArea();
+    private Enemy currentEnemy;
+    private int foeIndex = 0;
+    private boolean gameOver = false;
 
     public SwingCombatUI() {
         // --- Choix de la race et de la profession ---
         Race[] races = Race.values();
         Profession[] profs = Profession.values();
-        Race chosenRace = (Race) JOptionPane.showInputDialog(
-                null, "Choisissez votre race :", "Setup du Joueur",
-                JOptionPane.QUESTION_MESSAGE, null, races, races[0]
-        );
-        Profession chosenProf = (Profession) JOptionPane.showInputDialog(
-                null, "Choisissez votre classe :", "Setup du Joueur",
-                JOptionPane.QUESTION_MESSAGE, null, profs, profs[0]
-        );
+        Race chosenRace = (Race) JOptionPane.showInputDialog(null, "Choisissez votre race :", "Setup du Joueur", JOptionPane.QUESTION_MESSAGE, null, races, races[0]);
+        Profession chosenProf = (Profession) JOptionPane.showInputDialog(null, "Choisissez votre classe :", "Setup du Joueur", JOptionPane.QUESTION_MESSAGE, null, profs, profs[0]);
 
         // --- Création du joueur et des ennemis ---
         player = new Player("Héros", chosenRace, chosenProf);
-        foes = List.of(
-                new Enemy("Goblin",  Difficulty.EASY),
-                new Enemy("Orc",     Difficulty.MEDIUM),
-                new Enemy("Dragon",  Difficulty.HARD)
-        );
+        foes = List.of(new Enemy("Goblin", Difficulty.EASY), new Enemy("Orc", Difficulty.MEDIUM), new Enemy("Dragon", Difficulty.HARD));
         nextEnemy();
 
         // --- Configuration de la fenêtre ---
         setTitle("Arena Battle");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new BorderLayout(10,10));
+        setLayout(new BorderLayout(10, 10));
 
         // — Panneau gauche : infos joueur + infos ennemi —
         JPanel pnlLeft = new JPanel();
@@ -63,12 +52,9 @@ public class SwingCombatUI extends JFrame {
         add(pnlLeft, BorderLayout.WEST);
 
         // — Panneau droit : subdivisé en deux —
-        JPanel pnlRight = new JPanel(new BorderLayout(5,5));
+        JPanel pnlRight = new JPanel(new BorderLayout(5, 5));
         //   - Haut : choix des attaques
-        JScrollPane scrollAbilities = new JScrollPane(pnlAbilities,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
-        );
+        JScrollPane scrollAbilities = new JScrollPane(pnlAbilities, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollAbilities.setBorder(BorderFactory.createTitledBorder("Choix des attaques"));
         pnlRight.add(scrollAbilities, BorderLayout.NORTH);
         //   - Bas : logs
@@ -88,6 +74,14 @@ public class SwingCombatUI extends JFrame {
         updateUIComponents();
     }
 
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ignored) {
+        }
+        SwingUtilities.invokeLater(SwingCombatUI::new);
+    }
+
     private void nextEnemy() {
         if (foeIndex >= foes.size()) {
             endGame("🏆 Vous avez vaincu tous les adversaires !");
@@ -97,20 +91,22 @@ public class SwingCombatUI extends JFrame {
         log("\n--> Nouveau combat : " + currentEnemy.getName());
     }
 
-    private void updateUIComponents() {
-        // Met à jour les labels HP et caractéristiques
-        lblPlayerInfo.setText(
-                String.format("<html><body>Vous (%s %s)<br/>HP : %d / %d</body></html>",
-                        player.getRace(), player.getProfession(),
-                        player.getHealth(), player.getMaxHealth())
-        );
-        lblEnemyInfo.setText(
-                String.format("<html><body>%s<br/>HP : %d / %d</body></html>",
-                        currentEnemy.getName(),
-                        currentEnemy.getHealth(), currentEnemy.getMaxHealth())
-        );
+    /**
+     * Incrémente le niveau du joueur, restaure ses PV et logue l'événement.
+     */
+    private void playerLevelUp() {
+        player.levelUp();  // utilise la méthode levelUp() définie dans Player
+        log("*** Vous montez au niveau " + player.getLevel() + " ! PV restaurés à " + player.getHealth() + " ***");
+    }
 
-        // Rafraîchit les boutons d’atos
+    /**
+     * Met à jour les labels en incluant le niveau.
+     */
+    private void updateUIComponents() {
+        lblPlayerInfo.setText(String.format("<html><body>Vous (lvl %d – %s %s)<br/>HP : %d / %d</body></html>", player.getLevel(), player.getRace(), player.getProfession(), player.getHealth(), player.getMaxHealth()));
+        lblEnemyInfo.setText(String.format("<html><body>%s (lvl %d)<br/>HP : %d / %d</body></html>", currentEnemy.getName(), currentEnemy.getLevel(), currentEnemy.getHealth(), currentEnemy.getMaxHealth()));
+
+        // reste inchangé…
         pnlAbilities.removeAll();
         if (!gameOver) {
             for (Ability ability : player.getAbilities()) {
@@ -127,28 +123,25 @@ public class SwingCombatUI extends JFrame {
         if (gameOver) return;
 
         // 1) Joueur attaque
-        String name = ((JButton)evt.getSource()).getText();
-        Ability ability = player.getAbilities().stream()
-                .filter(a -> a.getName().equals(name))
-                .findFirst().orElseThrow();
+        String name = ((JButton) evt.getSource()).getText();
+        Ability ability = player.getAbilities().stream().filter(a -> a.getName().equals(name)).findFirst().orElseThrow();
         ability.execute(player, currentEnemy);
-        log(String.format("Vous utilisez %s → %d HP restants à %s",
-                ability.getName(), currentEnemy.getHealth(), currentEnemy.getName()));
+        log(String.format("Vous utilisez %s → %d HP restants à %s", ability.getName(), currentEnemy.getHealth(), currentEnemy.getName()));
 
         // 2) Vérification mort ennemi
         if (!currentEnemy.isAlive()) {
             log(currentEnemy.getName() + " est vaincu !");
+            // Level-up du joueur
+            playerLevelUp();
             nextEnemy();
             updateUIComponents();
             return;
         }
 
         // 3) Ennemi riposte
-        Ability ai = currentEnemy.getAbilities()
-                .get((int)(Math.random() * currentEnemy.getAbilities().size()));
+        Ability ai = currentEnemy.getAbilities().get((int) (Math.random() * currentEnemy.getAbilities().size()));
         ai.execute(currentEnemy, player);
-        log(String.format("%s utilise %s → vous avez %d HP",
-                currentEnemy.getName(), ai.getName(), player.getHealth()));
+        log(String.format("%s utilise %s → vous avez %d HP", currentEnemy.getName(), ai.getName(), player.getHealth()));
 
         // 4) Vérification mort joueur
         if (!player.isAlive()) {
@@ -170,11 +163,5 @@ public class SwingCombatUI extends JFrame {
     private void log(String line) {
         taLog.append(line + "\n");
         taLog.setCaretPosition(taLog.getDocument().getLength());
-    }
-
-    public static void main(String[] args) {
-        try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
-        catch (Exception ignored) {}
-        SwingUtilities.invokeLater(SwingCombatUI::new);
     }
 }

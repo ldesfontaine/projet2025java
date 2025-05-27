@@ -1,14 +1,11 @@
 package com.arena.ability.impl;
 
-import com.arena.ability.Ability;
+import com.arena.ability.SimpleDamageAbility;
 import com.arena.model.Character;
 
-public class Backstab implements Ability {
+public class Backstab extends SimpleDamageAbility {
     @Override public String getName() { return "Backstab"; }
-    @Override
-    public void applyEffect(Character src, Character tgt) {
-        int dmg = src.getStrength() + 5;
-        tgt.takeDamage(dmg);
-        System.out.printf("%s takes %d damage!\n", tgt.getName(), dmg);
+    @Override protected int computeBaseDamage(Character source) {
+        return source.getStrength() + 5;
     }
 }
