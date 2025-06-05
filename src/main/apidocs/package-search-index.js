@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.arena"},{"l":"com.arena.ability"},{"l":"com.arena.ability.impl"},{"l":"com.arena.combat"},{"l":"com.arena.exceptions"},{"l":"com.arena.model"},{"l":"com.arena.model.difficulty"},{"l":"com.arena.stats"},{"l":"com.arena.test"},{"l":"com.arena.ui"}];updateSearchResults();

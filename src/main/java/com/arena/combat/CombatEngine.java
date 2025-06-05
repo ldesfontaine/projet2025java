@@ -8,8 +8,13 @@ import java.util.Scanner;
 import com.arena.stats.Race;
 import com.arena.stats.Profession;
 
+/**
+ * Moteur de combat gérant les affrontements entre le joueur et les ennemis.
+ */
 public class CombatEngine {
-
+    /**
+     * Lance le jeu en initialisant le joueur, les ennemis et les combats.
+     */
     public void start() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Choisissez votre race (1=HUMAN,2=ELF,3=ORC) :");

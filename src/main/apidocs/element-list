@@ -1,0 +1,10 @@
+com.arena
+com.arena.ability
+com.arena.ability.impl
+com.arena.combat
+com.arena.exceptions
+com.arena.model
+com.arena.model.difficulty
+com.arena.stats
+com.arena.test
+com.arena.ui

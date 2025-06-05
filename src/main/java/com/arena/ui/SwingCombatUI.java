@@ -12,6 +12,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
+/**
+ * Interface graphique pour le jeu de combat utilisant Swing.
+ */
 public class SwingCombatUI extends JFrame {
     private final Player player;
     private final List<Enemy> foes;
@@ -24,6 +27,9 @@ public class SwingCombatUI extends JFrame {
     private int foeIndex = 0;
     private boolean gameOver = false;
 
+    /**
+     * Construit l'interface graphique et initialise le joueur et les ennemis.
+     */
     public SwingCombatUI() {
         // --- Choix de la race et de la profession ---
         Race[] races = Race.values();
@@ -74,6 +80,11 @@ public class SwingCombatUI extends JFrame {
         updateUIComponents();
     }
 
+    /**
+     * Point d'entrée pour lancer l'interface graphique.
+     *
+     * @param args Arguments de la ligne de commande (non utilisés).
+     */
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -82,6 +93,9 @@ public class SwingCombatUI extends JFrame {
         SwingUtilities.invokeLater(SwingCombatUI::new);
     }
 
+    /**
+     * Passe à l'ennemi suivant ou termine le jeu.
+     */
     private void nextEnemy() {
         if (foeIndex >= foes.size()) {
             endGame("🏆 Vous avez vaincu tous les adversaires !");
@@ -119,6 +133,11 @@ public class SwingCombatUI extends JFrame {
         pnlAbilities.repaint();
     }
 
+    /**
+     * Gère l'action d'attaque du joueur via un bouton.
+     *
+     * @param evt L'événement déclenché par le bouton.
+     */
     private void onPlayerAttack(ActionEvent evt) {
         if (gameOver) return;
 
@@ -151,6 +170,11 @@ public class SwingCombatUI extends JFrame {
         updateUIComponents();
     }
 
+    /**
+     * Termine le jeu avec un message final.
+     *
+     * @param message Le message de fin (victoire ou défaite).
+     */
     private void endGame(String message) {
         gameOver = true;
         log("\n=== " + message + " ===");
@@ -160,6 +184,11 @@ public class SwingCombatUI extends JFrame {
         }
     }
 
+    /**
+     * Ajoute une ligne au journal de combat.
+     *
+     * @param line La ligne à ajouter.
+     */
     private void log(String line) {
         taLog.append(line + "\n");
         taLog.setCaretPosition(taLog.getDocument().getLength());

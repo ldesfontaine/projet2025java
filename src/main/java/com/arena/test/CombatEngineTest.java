@@ -12,8 +12,13 @@ import org.junit.Test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Tests unitaires pour le moteur de combat.
+ */
 public class CombatEngineTest {
-
+    /**
+     * Teste un scénario où le joueur gagne contre un ennemi facile.
+     */
     // Test 1 : Victoire
     @Test
     public void testPlayerWinsEasy() {
