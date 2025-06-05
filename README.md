@@ -1,5 +1,3 @@
-# Rapport sur le Projet
-
 ## 1. Fonctionnement du Code
 Le projet est un jeu de combat textuel où un joueur affronte des ennemis de difficulté croissante. Voici les principaux éléments :
 
