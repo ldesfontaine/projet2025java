@@ -5,10 +5,8 @@ import com.arena.model.Enemy;
 import com.arena.model.difficulty.Difficulty;
 import java.util.List;
 import java.util.Scanner;
-
 import com.arena.stats.Race;
 import com.arena.stats.Profession;
-
 
 public class CombatEngine {
 
@@ -29,9 +27,6 @@ public class CombatEngine {
         };
 
         Player player = new Player("Hero", race, prof);
-
-
-
         List<Enemy> foes = List.of(
                 new Enemy("Goblin", Difficulty.EASY),
                 new Enemy("Orc", Difficulty.MEDIUM),
@@ -39,16 +34,22 @@ public class CombatEngine {
         );
         for (Enemy enemy : foes) {
             System.out.println("Fight " + enemy.getName());
-            while (player.isAlive() && enemy.isAlive()) {
-                player.chooseAbility(enemy);
-                if (!enemy.isAlive()) break;
-                enemy.chooseAbility(player);
-            }
-            if (!player.isAlive()) {
+            if (!fight(player, enemy)) {
                 System.out.println("Defeat...");
                 return;
             }
         }
         System.out.println("Victory !");
+    }
+
+    // Nouvelle méthode pour tester le combat
+    public boolean fight(Player player, Enemy enemy) {
+        while (player.isAlive() && enemy.isAlive()) {
+            player.chooseAbility(enemy);
+            if (!enemy.isAlive()) return true;
+            enemy.chooseAbility(player);
+            if (!player.isAlive()) return false;
+        }
+        return player.isAlive();
     }
 }
