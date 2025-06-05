@@ -1,55 +1,134 @@
-## 1. Fonctionnement du Code
-Le projet est un jeu de combat textuel où un joueur affronte des ennemis de difficulté croissante. Voici les principaux éléments :
+## 🧾 **Rapport Fonctionnel – Système Arena**
 
-### Modèles :
-- **Character** : Classe de base pour les personnages avec des attributs comme les points de vie (PV), la force, l’agilité et l’intelligence.
-- **Player** : Représente le joueur, avec une race (ex. humain, orc) et une profession (ex. guerrier, mage).
-- **Enemy** : Représente les ennemis, avec une difficulté (facile, moyen, difficile).
+### 🎯 Objectif du système
 
-### Habiletés :
-Situées dans le paquetage `com.arena.ability`, elles définissent les actions possibles (attaques, sorts, etc.) que le joueur ou l’ennemi peut utiliser.
+Le projet *Arena* est un jeu de combat entre personnages (joueurs et ennemis) où chaque entité possède des statistiques, des compétences (abilities) et une logique de progression. Il repose sur une architecture orientée objet claire, favorisant **la modularité, la réutilisabilité** et **l’extensibilité**.
 
-### Combat :
-La classe `CombatEngine` gère la logique des affrontements. Elle exécute les tours où le joueur et l’ennemi s’attaquent jusqu’à ce qu’un des deux soit vaincu.
+---
 
-### Interface Utilisateur :
-Une interface graphique (`SwingCombatUI`) permet de visualiser les combats et d’interagir avec le jeu.
+## 🧩 **Fonctionnalités principales**
 
-## 2. Workflow du Projet
-Le déroulement du jeu suit ces étapes :
+### 1. 👥 **Modélisation des personnages**
 
-### Initialisation :
-- Le joueur choisit sa race et sa profession (via la console ou l’interface graphique).
-- Les ennemis sont générés avec des statistiques basées sur leur difficulté.
+#### 🧬 Classe `Character` (abstraite)
 
-### Combat :
-- Le joueur affronte un ennemi à la fois.
-- À chaque tour :
-  - Le joueur choisit une habileté (ex. attaquer).
-  - L’ennemi riposte avec une action (souvent aléatoire).
-- Le combat se termine quand un des deux n’a plus de PV.
+* Représente un être pouvant combattre : joueur ou ennemi.
+* Contient :
 
-### Progression :
-- Si le joueur gagne :
-  - Il monte en niveau (amélioration des stats).
-  - Ses PV sont restaurés.
-  - Il passe à l’ennemi suivant.
-- Si le joueur perd :
-  - Le jeu s’arrête.
+  * Statistiques (force, agilité, intelligence, santé)
+  * Liste de compétences (`List<Ability>`)
+  * Méthodes d’interaction : `takeDamage`, `executeAbility`, `isAlive`, etc.
+* C’est une **superclasse** (parent commun).
 
-### Victoire Finale :
-- Le joueur gagne s’il bat tous les ennemis.
+#### 👤 `Player` hérite de `Character`
 
-## 3. Tests
-Les tests unitaires dans `CombatEngineTest.java` vérifient le bon fonctionnement du combat :
+* Ajoute :
 
-- **Victoire facile** : Un guerrier humain bat un Goblin faible.
-- **Défaite** : Un mage humain perd contre un Dragon puissant.
-- **Victoire serrée** : Un guerrier orc bat un ennemi moyen.
+  * Notion de `Race` et `Profession`
+  * Niveaux (`level`) et montée en puissance (`levelUp`)
+* Spécificité : Le joueur choisit activement ses compétences.
 
-Ces tests utilisent des assertions pour valider les résultats et des messages pour montrer qui gagne.
+#### 🧟 `Enemy` hérite aussi de `Character`
 
-## 4. Améliorations Possibles
-- Ajouter des tests pour la montée en niveau ou les effets spécifiques des habiletés.
-- Utiliser un outil comme Mockito pour simuler des comportements complexes.
-- Mesurer la couverture de code avec JaCoCo pour s’assurer que tout est testé.
+* Associé à une `Difficulty` (niveau d’adversité)
+* Sélection automatique des compétences selon difficulté.
+
+### 2. 🧠 **Capacités (`Ability`)**
+
+#### 🔗 Interface `Ability`
+
+* Définit l'API commune : `getName`, `applyEffect`, `execute`.
+* Permet d'implémenter des compétences variées, interchangeables.
+
+#### 🧨 Classe abstraite `SimpleDamageAbility` (hérite de `Ability`)
+
+* Fournit une logique partielle pour les compétences infligeant des dégâts.
+* Comporte :
+
+  * Méthode d’effet par défaut (`applyEffect`)
+  * Méthode protégée `computeBaseDamage` à personnaliser.
+
+#### 🔥 Implémentations concrètes :
+
+* `Backstab`, `Fireball`, `Slash`, `PiercingArrow`… Chaque classe redéfinit ses effets et dégâts spécifiques.
+
+### 3. 🧝 **Races et Professions**
+
+#### 🧬 Enum `Race`
+
+* Donne les statistiques de base (ex. : force, agilité…) + compétences raciales (`PiercingArrow`).
+* Exemples : `HUMAN`, `ELF`, `ORC`.
+
+#### 🧑‍🏭 Enum `Profession`
+
+* Fournit les **bonus de classe** (ex : +intelligence pour un `MAGE`) et les compétences associées (`Fireball`, `Slash`, etc.).
+
+### 4. ⚔️ **Moteur de Combat**
+
+#### `CombatEngine`
+
+* Lance un combat (`fight`) entre un `Player` et un `Enemy`.
+* Gestion des tours via `TurnManager`.
+
+#### `TurnManager`
+
+* File d'attente des participants
+* Gère le passage au joueur suivant
+
+### 5. 🖥️ **Interface Graphique**
+
+#### `SwingCombatUI`
+
+* Interface Swing avec :
+
+  * Gestion de l’état du jeu
+  * Affichage du joueur, des ennemis
+  * Interaction utilisateur
+
+---
+
+## 🧬 Zoom sur l’héritage – Utilisation et intérêt
+
+### 🏛️ Objectif de l’héritage
+
+L’héritage permet de **partager du code commun** entre plusieurs classes, d’en **spécialiser certaines** tout en garantissant **une structure cohérente**.
+
+---
+
+### 🧱 **Hiérarchie des classes via héritage**
+
+#### `Character` ← `Player`, `Enemy`
+
+* **But** : factoriser la logique de base (santé, stats, gestion des compétences)
+* **Spécialisation** :
+
+  * `Player` → ajout de niveau, race, profession, choix de compétence manuel
+  * `Enemy` → difficulté, IA, sélection automatique
+
+#### `Ability` (interface) → `SimpleDamageAbility` (abstract) → `Fireball`, `Backstab`, etc.
+
+* **But** : décrire une API commune, tout en permettant une implémentation partielle.
+* `SimpleDamageAbility` simplifie la création d’attaques en fournissant un squelette.
+* Chaque attaque peut ensuite spécialiser ses dégâts.
+
+---
+
+### 🔁 **Polymorphisme**
+
+Grâce à l’héritage :
+
+* Un `List<Ability>` peut contenir **n’importe quelle compétence**, qu’elle soit `Fireball`, `Slash`, etc.
+* Un `Character` peut être traité uniformément (joueur ou ennemi) dans la boucle de combat.
+
+---
+
+## ✅ Avantages du design
+
+| Caractéristique  | Description                                                                                          |
+| ---------------- | ---------------------------------------------------------------------------------------------------- |
+| **Extensible**   | Ajouter une nouvelle race, compétence, ou type d’ennemi est facile sans modifier le cœur du système. |
+| **Modulaire**    | Les responsabilités sont bien séparées (`UI`, `combat`, `stats`, `abilities`).                       |
+| **Réutilisable** | Les classes abstraites et interfaces permettent de réutiliser des comportements sans duplication.    |
+| **Lisible**      | Le système d’héritage clarifie la hiérarchie des entités du jeu.                                     |
+
+---
